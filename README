@@ -1,0 +1,16 @@
+ReBrace works in conjunction with ThisService to add an option on the OS X services menu that processes selected code to put the opening braces in the correct place (on a new line).
+
+To use you'll need to install ThisService from http://wafflesoftware.net/thisservice/ and grab a clone of the ReBranch script.
+Run up ThisService and you'll see the option to Create a Service:
+	Give it a name (I suggest ReBrace)
+	Choose the rebrace.rb script you grabbed from the repo.
+	Pick the 'Filter' type
+	You can either copy the script in the include, or if you have put the script somewhere sensible just choose reference, then you can simply pull in any future changes.
+	Hit Create Service.
+	Additionally, if you are on Snow Leopard, you need to enable the Service in System Preferences:
+		Open up Keyboard Preferences in System Preferences.
+		Head over to the Keyboard Shortcuts tab.
+		Select Services from the table.
+		Scroll to the Text section to find the ReBrace (or whatever you called it) item, and tick the checkbox.
+		
+Now it is ready to use. Simply select some code you want to re-brace in your editor, and use the Services menu (it'll be in the right-click menu or in the Application menu on the main menu bar) to run ReBrace.
