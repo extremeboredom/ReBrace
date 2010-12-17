@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-# ThisService Ruby service script example
-# Service type: Acts on input.
-# Revision 1.
+# ReBrace - Corrects opening brace positioning in code.
+# Service type: Filter
 
 # Unicode considerations:
 #  Set $KCODE to 'u'. This makes STDIN and STDOUT both act as containing UTF-8.
@@ -29,16 +28,19 @@ end
 
 input = STDIN.gets nil
 # input now contains the contents of STDIN.
-# Write your script here.
 
+# Process each of the lines individually
 input.each_line do |line|
   # Match against a line starting with whitespace, followed by non-whotespace or a space
   # followed by an opening brace and whitespace
   if line =~ /^(\s*)\S(\S| )*(\{\s)$/ then
+    # We got a match, so remove the brace from the line and insert
+    # a new line with the same indentation and a brace.
     newline = line.sub(/\{\s/, "\n")
     print newline
     print "#{line[/^\s+/]}{\n"
   else
+    # No match, just output the line again
     print line
   end
 end
