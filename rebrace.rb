@@ -31,7 +31,8 @@ class Rebracer
     @toProcess = input
   end
   
-  def rebrace# Process each of the lines individually
+  def rebrace
+    # Process each of the lines individually
     @toProcess.each_line do |line|
       # Match against a line starting with whitespace, followed by non-whotespace or a space
       # followed by an opening brace and whitespace
