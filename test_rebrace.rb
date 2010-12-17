@@ -76,4 +76,20 @@ class TestRebracer < Test::Unit::TestCase
     END_OF_CODE
     assert_equal(expected, rebraceToString(input))
   end
+  
+  def test_comment_ending
+    input = <<-END_OF_CODE
+      if (x == 1) { // Comment
+        ++x;
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if (x == 1) 
+      {
+        // Comment
+        ++x;
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should move brace followed by comment")
+  end
 end
