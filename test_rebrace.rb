@@ -38,4 +38,42 @@ class TestRebracer < Test::Unit::TestCase
     END_OF_CODE
     assert_equal(expected, rebraceToString(input))
   end
+  
+  def test_complex
+    input = <<-END_OF_CODE
+      // Customize the appearance of table view cells.
+      - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+          static NSString *CellIdentifier = @"Cell";
+
+          UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+          if (cell == nil) {
+              cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+          }
+
+          // Configure the cell...
+
+          return cell;
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      // Customize the appearance of table view cells.
+      - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+      {
+
+          static NSString *CellIdentifier = @"Cell";
+
+          UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+          if (cell == nil) 
+          {
+              cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+          }
+
+          // Configure the cell...
+
+          return cell;
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input))
+  end
 end
