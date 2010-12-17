@@ -36,10 +36,10 @@ class Rebracer
     @toProcess.each_line do |line|
       # Match against a line starting with whitespace, followed by non-whotespace or a space
       # followed by an opening brace and whitespace
-      if line =~ /^(\s*)\S(\S| )*(\{\s)$/ then
+      if line =~ /^(\s*)\S(\S| )*(\{\s+)$/ then
         # We got a match, so remove the brace from the line and insert
         # a new line with the same indentation and a brace.
-        newline = line.sub(/\{\s/, "\n")
+        newline = line.sub(/\{\s+/, "\n")
         yield newline
         yield "#{line[/^\s+/]}{\n"
       else
