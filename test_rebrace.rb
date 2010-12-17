@@ -251,7 +251,7 @@ class TestRebracer < Test::Unit::TestCase
     expected = <<-END_OF_CODE
       if (x == 1) 
       {
-        /* Comment */    
+        /* Comment */
         ++x;
       }
     END_OF_CODE
