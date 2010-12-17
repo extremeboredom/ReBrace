@@ -32,8 +32,16 @@ class Rebracer
   end
   
   def rebrace
+    needsIndenting = ""
     # Process each of the lines individually
     @toProcess.each_line do |line|
+      # Something left over from the last time to indent?
+      if needsIndenting != "" then
+        # Indent to the same level as the current line
+        yield "#{line[/^\s+/]}#{needsIndenting}"
+        # And remove the value
+        needsIndenting = ""
+      end
       # Match against a line starting with whitespace, followed by non-whotespace or a space
       # followed by an opening brace and whitespace
       if line =~ /^(\s*)\S(\S| )*(\{\s)$/ then
@@ -42,6 +50,14 @@ class Rebracer
         newline = line.sub(/\{\s/, "\n")
         yield newline
         yield "#{line[/^\s+/]}{\n"
+      # Comment on the end of the line
+      elsif line =~ /^(\s*)\S(\S| )*(\{\s)(\/\/.*)(\s)$/ then
+        # We got a match, so remove the brace from the line and insert
+        # a new line with the same indentation and a brace.
+        newline = line.sub(/\{\s(\/\/.*)(\s)/, "\n")
+        yield newline
+        yield "#{line[/^\s+/]}{\n"
+        needsIndenting =  "#{line[/(\/\/.*)/]}\n"
       else
         # No match, just yield the line again
         yield line
