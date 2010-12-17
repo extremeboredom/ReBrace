@@ -22,4 +22,20 @@ class TestRebracer < Test::Unit::TestCase
     END_OF_CODE
     assert_equal(expected, rebraceToString(input))
   end
+  
+  def test_nochange
+    input = <<-END_OF_CODE
+      if (x == 1)
+      {
+        ++x;
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if (x == 1)
+      {
+        ++x;
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input))
+  end
 end
