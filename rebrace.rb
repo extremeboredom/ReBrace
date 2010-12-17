@@ -51,10 +51,10 @@ class Rebracer
         yield newline
         yield "#{line[/^\s+/]}{\n"
       # Comment on the end of the line
-      elsif line =~ /^(\s*)\S(\S| )*(\{\s)(\/\/.*)(\s)$/ then
+      elsif line =~ /^(\s*)\S(\S| )*(\{\s*)(\/\/.*)(\s)$/ then
         # We got a match, so remove the brace from the line and insert
         # a new line with the same indentation and a brace.
-        newline = line.sub(/\{\s(\/\/.*)(\s)/, "\n")
+        newline = line.sub(/\{\s*(\/\/.*)(\s)/, "\n")
         yield newline
         yield "#{line[/^\s+/]}{\n"
         needsIndenting =  "#{line[/(\/\/.*)/]}\n"
