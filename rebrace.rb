@@ -26,21 +26,31 @@ else # 1.9 and above
   end
 end
 
+class Rebracer
+  def initialize(input)
+    @toProcess = input
+  end
+  
+  def rebrace# Process each of the lines individually
+    @toProcess.each_line do |line|
+      # Match against a line starting with whitespace, followed by non-whotespace or a space
+      # followed by an opening brace and whitespace
+      if line =~ /^(\s*)\S(\S| )*(\{\s)$/ then
+        # We got a match, so remove the brace from the line and insert
+        # a new line with the same indentation and a brace.
+        newline = line.sub(/\{\s/, "\n")
+        yield newline
+        yield "#{line[/^\s+/]}{\n"
+      else
+        # No match, just yield the line again
+        yield line
+      end
+    end
+  end
+end
+
 input = STDIN.gets nil
 # input now contains the contents of STDIN.
 
-# Process each of the lines individually
-input.each_line do |line|
-  # Match against a line starting with whitespace, followed by non-whotespace or a space
-  # followed by an opening brace and whitespace
-  if line =~ /^(\s*)\S(\S| )*(\{\s)$/ then
-    # We got a match, so remove the brace from the line and insert
-    # a new line with the same indentation and a brace.
-    newline = line.sub(/\{\s/, "\n")
-    print newline
-    print "#{line[/^\s+/]}{\n"
-  else
-    # No match, just output the line again
-    print line
-  end
-end
+# print each of the rebraced lines.
+Rebracer.new(input).rebrace { |line| print line }
