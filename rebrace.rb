@@ -30,3 +30,13 @@ end
 input = STDIN.gets nil
 # input now contains the contents of STDIN.
 # Write your script here.
+
+input.each_line do |line|
+  if line =~ /.*\{\s/ then
+    newline = line.sub(/\{\s/, "\n")
+    print newline
+    print "#{line[/^\s+/]}{\n"
+  else
+    print line
+  end
+end
