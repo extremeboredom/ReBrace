@@ -50,8 +50,11 @@ class Rebracer
   end
 end
 
-input = STDIN.gets nil
-# input now contains the contents of STDIN.
+# Only run this if called as a script.
+if __FILE__ == $0
+  input = STDIN.gets nil
+  # input now contains the contents of STDIN.
 
-# print each of the rebraced lines.
-Rebracer.new(input).rebrace { |line| print line }
+  # print each of the rebraced lines.
+  Rebracer.new(input).rebrace { |line| print line }
+end
