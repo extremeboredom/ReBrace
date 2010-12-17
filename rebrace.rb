@@ -32,7 +32,9 @@ input = STDIN.gets nil
 # Write your script here.
 
 input.each_line do |line|
-  if line =~ /.*\{\s/ then
+  # Match against a line starting with whitespace, followed by non-whotespace or a space
+  # followed by an opening brace and whitespace
+  if line =~ /^(\s*)\S(\S| )*(\{\s)$/ then
     newline = line.sub(/\{\s/, "\n")
     print newline
     print "#{line[/^\s+/]}{\n"
