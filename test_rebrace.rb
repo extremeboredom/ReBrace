@@ -145,4 +145,53 @@ class TestRebracer < Test::Unit::TestCase
     END_OF_CODE
     assert_equal(expected, rebraceToString(input), "Should move brace followed by comment")
   end
+  
+  def test_comment_ending_no_spacing
+    input = <<-END_OF_CODE
+      if (x == 1) {// Comment
+        ++x;
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if (x == 1) 
+      {
+        // Comment
+        ++x;
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should move brace followed by comment without separation")
+  end
+  
+  def test_comment_ending_pre_spacing
+    input = <<-END_OF_CODE
+      if (x == 1) {    // Comment
+        ++x;
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if (x == 1) 
+      {
+        // Comment
+        ++x;
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should move brace followed by comment and extra separation")
+  end
+  
+  def test_comment_ending_post_spacing
+    input = <<-END_OF_CODE
+      if (x == 1) {    // Comment    
+        ++x;
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if (x == 1) 
+      {
+        // Comment    
+        ++x;
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should move brace followed by comment with trailing space")
+  end
+  
 end
