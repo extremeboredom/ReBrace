@@ -57,6 +57,7 @@ class Rebracer
         newline = line.sub(/\{\s*((\/\/.*)|(\/\*.*\*\/))(\s+)/, "\n")
         yield newline
         yield "#{line[/^\s+/]}{\n"
+        # remember the comment so that we can indent it the correct amount
         needsIndenting =  "#{line[/((\/\/.*)|(\/\*.*\*\/))/]}\n"
       else
         # No match, just yield the line again
