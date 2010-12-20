@@ -26,15 +26,27 @@ else # 1.9 and above
   end
 end
 
+class PointerDeclarationPreprocessor
+  def preprocess(line)
+    # Perform a global substition in the line for the pointer declaration pattern
+    line.gsub(/([A-Z]\w*)(\* | \* )([a-z\_]\w*)/) do |match|
+      match.sub(/(\* | \* )/, " *")
+    end
+  end
+end
+
 class Rebracer
   def initialize(input)
     @toProcess = input
+    @preprocessor = PointerDeclarationPreprocessor.new
   end
   
   def rebrace
     needsIndenting = ""
     # Process each of the lines individually
     @toProcess.each_line do |line|
+      # Preprocess the line
+      line = @preprocessor.preprocess(line)
       # Something left over from the last time to indent?
       if needsIndenting != "" then
         # Indent to the same level as the current line
