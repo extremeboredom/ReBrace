@@ -258,4 +258,66 @@ class TestRebracer < Test::Unit::TestCase
     assert_equal(expected, rebraceToString(input), "Should move brace followed by star comment with trailing space")
   end
   
+  # --------------- Pointer Tests --------------- #
+  
+  def test_pointer_no_change
+    input = <<-END_OF_CODE
+      NSString *myString = @"string";
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      NSString *myString = @"string";
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should not have modified correct pointer declaration")
+  end
+  
+  def test_pointer_class_side
+    input = <<-END_OF_CODE
+      NSString* myString = @"string";
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      NSString *myString = @"string";
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should have moved class-adjacent pointer")
+  end
+  
+  def test_pointer_mid_point
+    input = <<-END_OF_CODE
+      NSString * myString = @"string";
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      NSString *myString = @"string";
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should have moved mod-point pointer")
+  end
+  
+  def test_pointer_class_side_braced
+    input = <<-END_OF_CODE
+      if ((NSString* myString = [file nextLine]) != nil) {
+        NSLog(@"%@", myString);
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if ((NSString *myString = [file nextLine]) != nil) 
+      {
+        NSLog(@"%@", myString);
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should have moved class-adjacent pointer and brace")
+  end
+  
+  def test_pointer_mid_point_braced
+    input = <<-END_OF_CODE
+      if ((NSString* myString = [file nextLine]) != nil) {
+        NSLog(@"%@", myString);
+      }
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      if ((NSString *myString = [file nextLine]) != nil) 
+      {
+        NSLog(@"%@", myString);
+      }
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should have moved mid-point pointer and brace")
+  end
+  
 end
