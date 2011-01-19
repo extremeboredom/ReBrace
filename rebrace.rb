@@ -27,9 +27,12 @@ else # 1.9 and above
 end
 
 class PointerDeclarationPreprocessor
+  @@basic_types = /int|double|float|char/
+  @@class_types = /[A-Z]\w*/
+  
   def preprocess(line)
     # Perform a global substition in the line for the pointer declaration pattern
-    line.gsub(/([A-Z]\w*)(\* | \* )([a-z\_]\w*)/) do |match|
+    line.gsub(/(#{@@class_types}|#{@@basic_types})(\* | \* )([a-z\_]\w*)/) do |match|
       match.sub(/(\* | \* )/, " *")
     end
   end
