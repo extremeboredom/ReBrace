@@ -287,7 +287,7 @@ class TestRebracer < Test::Unit::TestCase
     expected = <<-END_OF_CODE
       NSString *myString = @"string";
     END_OF_CODE
-    assert_equal(expected, rebraceToString(input), "Should have moved mod-point pointer")
+    assert_equal(expected, rebraceToString(input), "Should have moved mid-point pointer")
   end
   
   def test_pointer_class_side_braced
@@ -318,6 +318,42 @@ class TestRebracer < Test::Unit::TestCase
       }
     END_OF_CODE
     assert_equal(expected, rebraceToString(input), "Should have moved mid-point pointer and brace")
+  end
+  
+  def test_basic_pointer_no_change
+    input = <<-END_OF_CODE
+      int x = 8;
+      int *myInt = &x;
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      int x = 8;
+      int *myInt = &x;
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should not have modified correct int pointer declaration")
+  end
+  
+  def test_basic_pointer_type_side
+    input = <<-END_OF_CODE
+      int x = 8;
+      int* myInt = &x;
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      int x = 8;
+      int *myInt = &x;
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should have moved type-adjacent int pointer")
+  end
+  
+  def test_basic_pointer_mid_point
+    input = <<-END_OF_CODE
+      int x = 8;
+      int * myInt = &x;
+    END_OF_CODE
+    expected = <<-END_OF_CODE
+      int x = 8;
+      int *myInt = &x;
+    END_OF_CODE
+    assert_equal(expected, rebraceToString(input), "Should have moved mid-point int pointer")
   end
   
 end
